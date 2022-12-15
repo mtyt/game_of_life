@@ -2,14 +2,14 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
+    <title>Game of Life</title>
     <style>
       * {
         padding: 0;
         margin: 0;
       }
       canvas {
-        background: #eee;
+        background: rgb(95, 144, 234);
         display: block;
         margin: 0 auto;
       }
@@ -22,6 +22,18 @@
     </div>
     <div>
     <canvas id="myCanvas" width="480" height="320"></canvas>
+    </div>
+    <div>
+        <h1>Instructions</h1>
+        Draw live cells by clicking. Hit Play or press space-bar to start. Drawing new 
+        cells will automatically pause.
+        <br>
+        Game of Life rules are simple:
+        <ul>
+            <li>Live cells with 2 or 3 neighbours survive</li>
+            <li>Dead cells with 3 live neighbours become alive</li>
+        </ul>
+        Neighbours are counted as 8 immediately surrounding cells.
     </div>
     <script>
         function array_in_array(haystack, needle){
@@ -169,9 +181,25 @@ var n   = [1,3];
                 ppButton.textContent = 'PLAY'
             }
         }
-        ppButton.addEventListener('click', togglePausePlay, false)
 
-        canvas.addEventListener('click', grid.click_cell.bind(grid), false);
+        function keyDownHandler(e) {
+            if (e.key === " "  ||
+                e.code == "Space" ||      
+                e.keyCode == 32 ) {
+                togglePausePlay();
+            }
+            }
+
+        ppButton.addEventListener('click', togglePausePlay, false)
+        document.addEventListener("keydown", keyDownHandler, false);
+        function add_live_cells(event) {
+            if (running === true) {
+                togglePausePlay();
+            }
+            grid.click_cell(event)
+        }
+
+        canvas.addEventListener('click', add_live_cells, false);
 
         function auto_run() {
             if (running === true) {
