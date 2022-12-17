@@ -9,26 +9,33 @@
 
 <body>
     <section>
-    <div>
-        <button type="button" id="play_pause">PLAY</button>
-        <button type="button" id="step">STEP</button>
         <div>
-            <input type="range" id="speed" name="speed" min="-10" max="20" value="0" autocomplete="off">
-            <label id="speed_label" for="speed">Speed: 1</label>
+            <button type="button" id="play_pause">PLAY</button>
+            <button type="button" id="step">STEP</button>
+            <div>
+                <input type="range" id="speed" name="speed" min="-10" max="20" value="0" autocomplete="off">
+                <label id="speed_label" for="speed">Speed: 1</label>
+            </div>
+            <div>
+                <input type="range" min="64" max="1024" value="640" step="64" class="slider" id="canvas_size">
+                <label id="canvas_size_label" for="canvas_size">Canvas Size: 640 px</label>
+            </div>
+            <div>
+                <input type="range" min="8" max="128" value="32" step="8" class="slider" id="grid_num">
+                <label id="grid_num_label" for="grid_num">Grid Size: 32</label>
+            </div>
+            <div>
+                <form>
+                <label for="random_seed">Random seed %</label>
+                <input type="text" id="random_seed" name="random_seed">
+                <input type="button" value="Go!" id="random_seed_submit">
+            </form>
+            </div>
         </div>
         <div>
-            <input type="range" min="64" max="1024" value="640" step="64" class="slider" id="canvas_size">
-            <label id="canvas_size_label" for="canvas_size">Canvas Size: 640 px</label>
+            <canvas id="myCanvas" width="640" height="640"></canvas>
         </div>
-        <div>
-            <input type="range" min="8" max="128" value="32" step="8" class="slider" id="grid_num">
-            <label id="grid_num_label" for="grid_num">Grid Size: 32</label>
-        </div>
-    </div>
-    <div>
-        <canvas id="myCanvas" width="640" height="640"></canvas>
-    </div>
-</section>
+    </section>
     <div>
         <h1>Instructions</h1>
         Draw live cells by clicking. Hit Play or press space-bar to start. Drawing new

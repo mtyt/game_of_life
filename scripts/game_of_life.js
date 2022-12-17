@@ -24,7 +24,7 @@ class Grid {
         this.x_n = x_n;
         this.dx = Math.floor(canvas.width / this.x_n);
         this.dy = this.dx; // keep it square
-        this.y_n = this.dy * canvas.height;
+        this.y_n = this.x_n;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.draw_lines();
 
@@ -80,6 +80,26 @@ class Grid {
         } else {
             this.active_cells.push(cell)
         }
+        this.draw_cells();
+    }
+
+    activate_random_cells(pct) {
+        let num = Math.round(pct / 100 * this.x_n * this.x_n);
+        console.log(num)
+        let new_cells = [];
+        for (let i = 0; i < num; i++) {
+            let duplicate = true
+            let x = 0
+            let y = 0
+            do {
+                x = Math.round(Math.random() * (this.x_n-1));
+                y = Math.round(Math.random() * (this.y_n-1));
+                duplicate = find_array_in_array(new_cells, [x, y]) > -1
+                console.log(duplicate)
+            } while (duplicate === true);
+            new_cells.push([x, y]);
+        }
+        this.active_cells = new_cells;
         this.draw_cells();
     }
 
@@ -182,8 +202,8 @@ canvas_slider.oninput = function () {
     canvas.height = this.value;
     grid = new Grid(old_x_n);
     canvas_size_label.innerText = "Canvas size: " + this.value + " px";
-    if (this.value<128) {
-    grid_slider.max = this.value
+    if (this.value < 128) {
+        grid_slider.max = this.value
     }
 }
 
@@ -221,4 +241,13 @@ speed_slider.addEventListener('change', function (e) {
 
 });
 
+random_seed = document.getElementById("random_seed")
+random_seed_submit = document.getElementById("random_seed_submit")
+
+random_seed_submit.addEventListener('click', function (e) {
+    let seed_pct = random_seed.value
+    if (seed_pct < 0) { seed_pct = 0 }
+    if (seed_pct > 100) { seed_pct = 100 }
+    grid.activate_random_cells(seed_pct)
+})
 loop();
