@@ -8,3 +8,10 @@ canvas {
     display: block;
     margin: 0 auto;
 }
+
+section {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin: 8 px;
+}
