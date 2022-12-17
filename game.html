@@ -19,6 +19,10 @@
             <input type="range" min="64" max="1024" value="640" step="64" class="slider" id="canvas_size">
             <label id="canvas_size_label" for="canvas_size">Canvas Size: 640 px</label>
         </div>
+        <div>
+            <input type="range" min="8" max="128" value="32" step="8" class="slider" id="grid_num">
+            <label id="grid_num_label" for="grid_num">Grid Size: 32</label>
+        </div>
     </div>
     <div>
         <canvas id="myCanvas" width="640" height="640"></canvas>
@@ -35,7 +39,6 @@
         </ul>
         Neighbours are counted as 8 immediately surrounding cells.
     </div>
-    <script src="scripts/display.js"></script>
     <script src="scripts/game_of_life.js"></script>
 
 </body>

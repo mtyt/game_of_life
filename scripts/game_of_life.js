@@ -25,7 +25,7 @@ class Grid {
         this.dx = Math.floor(canvas.width / this.x_n);
         this.dy = this.dx; // keep it square
         this.y_n = this.dy * canvas.height;
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.draw_lines();
 
         this.active_cells = [];
@@ -131,7 +131,7 @@ class Grid {
         this.draw_cells();
     }
 }
-let grid = new Grid(30)
+let grid = new Grid(32)
 
 let stepButton = document.querySelector("#step");
 stepButton.addEventListener('click', grid.step.bind(grid), false)
@@ -172,6 +172,33 @@ function auto_run() {
         grid.step();
     }
 }
+let grid_slider = document.getElementById("grid_num");
+let grid_label = document.getElementById("grid_num_label");
+let canvas_slider = document.getElementById("canvas_size");
+let canvas_size_label = document.getElementById("canvas_size_label");
+canvas_slider.oninput = function () {
+    let old_x_n = grid.x_n
+    canvas.width = this.value;
+    canvas.height = this.value;
+    grid = new Grid(old_x_n);
+    canvas_size_label.innerText = "Canvas size: " + this.value + " px";
+    if (this.value<128) {
+    grid_slider.max = this.value
+    }
+}
+
+// prevent scrolling on space
+window.addEventListener('keydown', function (e) {
+    if (e.key == " " && e.target == document.body) {
+        e.preventDefault();
+    }
+});
+
+grid_slider.addEventListener('change', function (e) {
+    let size = this.value
+    grid_label.innerText = "Grid Size: " + size
+    grid = new Grid(size)
+});
 
 let speed_slider = document.getElementById("speed");
 let speed_label = document.getElementById("speed_label");
