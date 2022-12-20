@@ -22,7 +22,7 @@ class Grid {
     constructor(x_n) {
         // Assign the RGB values as a property of `this`.
         this.x_n = x_n;
-        this.dx = Math.floor(canvas.width / this.x_n);
+        this.dx = canvas.width / this.x_n;
         this.dy = this.dx; // keep it square
         this.y_n = this.x_n;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -37,16 +37,17 @@ class Grid {
                 this.all_cells.push(cell);
             }
         }
+        this.center = [Math.round(this.x_n / 2), Math.round(this.y_n / 2)]
     }
 
     draw_lines() {
-        for (let step = 0; step < this.x_n; step++) {
+        for (let step = 0; step < this.x_n+1; step++) {
             ctx.beginPath();
             ctx.moveTo(step * this.dx, 0);
             ctx.lineTo(step * this.dx, canvas.height);
             ctx.stroke();
         }
-        for (let step = 0; step < this.y_n; step++) {
+        for (let step = 0; step < this.y_n+1; step++) {
             ctx.beginPath();
             ctx.moveTo(0, step * this.dy);
             ctx.lineTo(canvas.width, step * this.dy);
@@ -92,13 +93,25 @@ class Grid {
             let x = 0
             let y = 0
             do {
-                x = Math.round(Math.random() * (this.x_n-1));
-                y = Math.round(Math.random() * (this.y_n-1));
+                x = Math.round(Math.random() * (this.x_n - 1));
+                y = Math.round(Math.random() * (this.y_n - 1));
                 duplicate = find_array_in_array(new_cells, [x, y]) > -1
                 console.log(duplicate)
             } while (duplicate === true);
             new_cells.push([x, y]);
         }
+        this.active_cells = new_cells;
+        this.draw_cells();
+    }
+
+    activate_preset(preset_coord, recenter = true) {
+        origin = this.center;
+        let new_cells = [];
+        if (recenter === true) {
+            for (const cell of preset_coord) {
+                new_cells.push([origin[0] + cell[0], origin[1] + cell[1]])
+            }
+        } else { new_cells = preset_coord }
         this.active_cells = new_cells;
         this.draw_cells();
     }
@@ -201,7 +214,7 @@ canvas_slider.oninput = function () {
     canvas.width = this.value;
     canvas.height = this.value;
     grid = new Grid(old_x_n);
-    canvas_size_label.innerText = "Canvas size: " + this.value + " px";
+    canvas_size_label.innerText = "Size";
     if (this.value < 128) {
         grid_slider.max = this.value
     }
@@ -216,7 +229,7 @@ window.addEventListener('keydown', function (e) {
 
 grid_slider.addEventListener('change', function (e) {
     let size = this.value
-    grid_label.innerText = "Grid Size: " + size
+    grid_label.innerText = "Number of cells"
     grid = new Grid(size)
 });
 
@@ -251,3 +264,110 @@ random_seed_submit.addEventListener('click', function (e) {
     grid.activate_random_cells(seed_pct)
 })
 loop();
+
+// choose a preset
+
+document.getElementById("r-pentomino").addEventListener('click', function (e) {
+    preset_coord = [[0, 0],
+    [0, 1],
+    [1, 1],
+    [0, -1],
+    [-1, 0]
+    ];
+    grid.activate_preset(preset_coord);
+})
+document.getElementById("glider").addEventListener('click', function (e) {
+    preset_coord = [[0, 0],
+    [0, 1],
+    [0, -1],
+    [2, 0],
+    [1, -1]
+    ];
+    grid.activate_preset(preset_coord);
+})
+document.getElementById("toad").addEventListener('click', function (e) {
+    preset_coord = [[0, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1],
+    [-1, 0],
+    [1, 0]
+    ];
+    grid.activate_preset(preset_coord);
+})
+document.getElementById("pulsar").addEventListener('click', function (e) {
+    preset_coord = [[2, 1],
+    [3, 1],
+    [4, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4],
+    [6, 2],
+    [6, 3],
+    [6, 4],
+    [2, 6],
+    [3, 6],
+    [4, 6],
+    [-2, 1],
+    [-3, 1],
+    [-4, 1],
+    [-1, 2],
+    [-1, 3],
+    [-1, 4],
+    [-6, 2],
+    [-6, 3],
+    [-6, 4],
+    [-2, 6],
+    [-3, 6],
+    [-4, 6],
+    [2, -1],
+    [3, -1],
+    [4, -1],
+    [1, -2],
+    [1, -3],
+    [1, -4],
+    [6, -2],
+    [6, -3],
+    [6, -4],
+    [2, -6],
+    [3, -6],
+    [4, -6],
+    [-2, -1],
+    [-3, -1],
+    [-4, -1],
+    [-1, -2],
+    [-1, -3],
+    [-1, -4],
+    [-6, -2],
+    [-6, -3],
+    [-6, -4],
+    [-2, -6],
+    [-3, -6],
+    [-4, -6],
+    ];
+    grid.activate_preset(preset_coord);
+})
+document.getElementById("lwss").addEventListener('click', function (e) {
+    preset_coord = [[0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 3],
+    [4, 3],
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 1]
+    ];
+    grid.activate_preset(preset_coord);
+})
+document.getElementById("ggg").addEventListener('click', function (e) {
+    preset_coord = [[5, 1], [5, 2], [6, 1], [6, 2], [5, 11], [6, 11], [7, 11], [4, 12], [3, 13], [3, 14], [8, 12], [9, 13], [9, 14], [6, 15], [4, 16], [5, 17], [6, 17], [7, 17], [6, 18], [8, 16], [3, 21], [4, 21], [5, 21], [3, 22], [4, 22], [5, 22], [2, 23], [6, 23], [1, 25], [2, 25], [6, 25], [7, 25], [3, 35], [4, 35], [3, 36], [4, 36]
+    ];
+    // grid needs to be > 35
+    if (grid.x_n < 40) {
+        size = 40
+        grid_label.innerText = "Grid Size: " + size
+        grid = new Grid(size)
+    }
+    grid.activate_preset(preset_coord, recenter = false);
+})

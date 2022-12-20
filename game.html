@@ -13,21 +13,34 @@
             <button type="button" id="play_pause">PLAY</button>
             <button type="button" id="step">STEP</button>
             <div>
-                <input type="range" id="speed" name="speed" min="-10" max="20" value="0" autocomplete="off">
-                <label id="speed_label" for="speed">Speed: 1</label>
+                <input class="slider" type="range" id="speed" name="speed" min="-10" max="20" value="0"
+                    autocomplete="off">
+                <label class="slider" id="speed_label" for="speed">Speed: 1</label>
             </div>
             <div>
-                <input type="range" min="64" max="1024" value="640" step="64" class="slider" id="canvas_size">
-                <label id="canvas_size_label" for="canvas_size">Canvas Size: 640 px</label>
+                <input class="slider" type="range" min="64" max="1024" value="640" step="64" class="slider"
+                    id="canvas_size">
+                <label class="slider" id="canvas_size_label" for="canvas_size">Size</label>
             </div>
             <div>
-                <input type="range" min="8" max="128" value="32" step="8" class="slider" id="grid_num">
-                <label id="grid_num_label" for="grid_num">Grid Size: 32</label>
+                <input class="slider" type="range" min="8" max="128" value="32" step="8" class="slider" id="grid_num">
+                <label class="slider" id="grid_num_label" for="grid_num">Number of cells</label>
             </div>
             <div>
-                <label for="random_seed">Random seed %</label>
-                <input type="text" id="random_seed" name="random_seed">
+                <label class="inputs" for="random_seed">Random seed %</label>
+                <input type="text" id="random_seed" name="random_seed" value="25" autocomplete="off" size="3">
                 <input type="button" value="Go!" id="random_seed_submit">
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Presets</button>
+                <div class="dropdown-content">
+                    <p id="r-pentomino">R-pentomino</p>
+                    <p id="glider">glider</p>
+                    <p id="toad">toad</p>
+                    <p id="pulsar">pulsar</p>
+                    <p id="lwss">Light-weight spaceship</p>
+                    <p id="ggg">Gosper Glider Gun</p>
+                </div>
             </div>
         </div>
         <div>
@@ -43,8 +56,13 @@
         <ul>
             <li>Live cells with 2 or 3 neighbours survive</li>
             <li>Dead cells with 3 live neighbours become alive</li>
+            <li> Neighbours are counted as 8 immediately surrounding cells</li>
         </ul>
-        Neighbours are counted as 8 immediately surrounding cells.
+        On this page, you can change the speed using the slider. 1 means 1 update per second. Very high speeds are limited by
+        your computer's number-crunching powers (and admittably, my implementation).
+        The total size of the grid can be changed, as well as the number of grid cells.
+        Use the Random Seed input to generate a random starting pattern with a certain percentage of living cells.
+        The Presets menu can be used to load pre-defined starting patterns.
     </div>
     <script src="scripts/game_of_life.js"></script>
 
